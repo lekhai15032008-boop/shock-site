@@ -2,126 +2,159 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iu Cún</title>
 
 <style>
-html, body{
-  margin:0;
-  padding:0;
-  background:black;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-  font-family:Arial, sans-serif;
+html, body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
-#heart{
-  font-size:80px;
-  cursor:pointer;
-  animation:beat 1s infinite;
+#heartScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-@keyframes beat{
-  0%{transform:scale(1)}
-  50%{transform:scale(1.15)}
-  100%{transform:scale(1)}
+.heart {
+    width: 150px;
+    height: 150px;
+    background: red;
+    position: relative;
+    transform: rotate(-45deg);
+    cursor: pointer;
+    animation: pulse 1s infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#text, #countdown{
-  position:absolute;
-  color:white;
-  font-size:50px;
-  display:none;
+.heart:before,
+.heart:after {
+    content: "";
+    width: 150px;
+    height: 150px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
 }
 
-video{
-  position:fixed;
-  inset:0;
-  width:100vw;
-  height:100vh;
-  object-fit:cover;
-  display:none;
-  background:black;
+.heart:before {
+    top: -75px;
+    left: 0;
+}
+
+.heart:after {
+    left: 75px;
+    top: 0;
+}
+
+.heart span {
+    position: absolute;
+    transform: rotate(45deg);
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.1); }
+    100% { transform: rotate(-45deg) scale(1); }
+}
+
+#countdownScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 50px;
+}
+
+#video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    display: none;
+    background: black;
 }
 </style>
 </head>
 
 <body>
 
-<div id="heart">❤️</div>
-<div id="text">iu cún</div>
-<div id="countdown"></div>
+<div id="heartScreen">
+    <div class="heart" onclick="startLove()">
+        <span>BẤM VÔ</span>
+    </div>
+</div>
 
-<video id="vid"
-playsinline
-webkit-playsinline
-preload="auto"
->
-  <source src="dbea6fe3-58bd-4727-bd6f-be2ecbf1dfb3.mp4" type="video/mp4">
+<div id="countdownScreen">
+    <div id="text">iu cún</div>
+    <div id="count"></div>
+</div>
+
+<video id="video" playsinline preload="auto">
+    <source src="dbea6fe3-58bd-4727-bd6f-be2ecbf1dfb3.mp4" type="video/mp4">
 </video>
 
 <script>
-const heart = document.getElementById("heart");
-const text = document.getElementById("text");
-const countdown = document.getElementById("countdown");
-const video = document.getElementById("vid");
+let video = document.getElementById("video");
+let heartScreen = document.getElementById("heartScreen");
+let countdownScreen = document.getElementById("countdownScreen");
+let countEl = document.getElementById("count");
 
-heart.addEventListener("click", async () => {
+function startLove() {
 
-  // Ẩn tim
-  heart.style.display = "none";
+    heartScreen.style.display = "none";
+    countdownScreen.style.display = "flex";
 
-  // Fake load video để iPhone đỡ đơ
-  video.load();
-  try {
-    await video.play();
-    video.pause();
-    video.currentTime = 0;
-  } catch(e){}
+    let count = 5;
+    countEl.innerText = count;
 
-  // Hiện chữ iu cún
-  text.style.display = "block";
-
-  // Bắt đầu đếm sau 1 giây
-  setTimeout(() => {
-    text.style.display = "none";
-    countdown.style.display = "block";
-
-    let numbers = [5,4,3,2];
-    let i = 0;
-
-    const interval = setInterval(async () => {
-      countdown.textContent = numbers[i];
-      i++;
-
-      // Khi tới số 2 (cuối cùng)
-      if(i === numbers.length){
-        clearInterval(interval);
-        countdown.style.display = "none";
-
-        // Hiện video
-        video.style.display = "block";
-
-        try{
-          await video.play();
-        }catch(e){}
-
-        // Fullscreen
-        if(video.requestFullscreen){
-          video.requestFullscreen();
-        } else if(video.webkitRequestFullscreen){
-          video.webkitRequestFullscreen();
+    let interval = setInterval(() => {
+        count--;
+        if (count >= 2) {
+            countEl.innerText = count;
+        } else {
+            clearInterval(interval);
+            launchVideo();
         }
-      }
-
     }, 1000);
+}
 
-  }, 1000);
+function launchVideo() {
 
-});
+    countdownScreen.style.display = "none";
+    video.style.display = "block";
+
+    // bật fullscreen
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.webkitEnterFullscreen) {
+        video.webkitEnterFullscreen(); // iPhone
+    }
+
+    video.play();
+}
 </script>
 
 </body>
