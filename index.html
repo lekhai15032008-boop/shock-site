@@ -11,6 +11,22 @@ html, body {
   overflow: hidden;
 }
 
+/* Màn mở đầu */
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Video full tuyệt đối */
 video {
   position: fixed;
   top: 0;
@@ -18,15 +34,29 @@ video {
   width: 100vw;
   height: 100vh;
   object-fit: cover;
+  display: none;
 }
 </style>
 </head>
 
 <body>
 
-<video autoplay muted loop playsinline>
+<div id="overlay" onclick="startVideo()">
+  ❤️ Bấm đi
+</div>
+
+<video id="vid" playsinline webkit-playsinline>
   <source src="580fa3f4-802e-49bb-8ed3-8d24c687ebfb.mp4" type="video/mp4">
 </video>
+
+<script>
+function startVideo() {
+  const v = document.getElementById("vid");
+  document.getElementById("overlay").remove();
+  v.style.display = "block";
+  v.play();
+}
+</script>
 
 </body>
 </html>
