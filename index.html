@@ -8,6 +8,8 @@ html, body {
   padding: 0;
   background: black;
   overflow: hidden;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
 video {
@@ -22,8 +24,6 @@ video {
 
 #overlay {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
   background: black;
@@ -31,7 +31,14 @@ video {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  color: white;
+  font-size: 80px;
+  z-index: 10;
+}
+
+#buttonArea {
+  display: none;
+  flex-direction: column;
+  align-items: center;
   font-size: 22px;
 }
 
@@ -41,45 +48,15 @@ video {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
   50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
 }
 </style>
 </head>
 
 <body>
 
-<div id="overlay" onclick="startVideo()">
-  <div class="heart">❤️</div>
-  <div>Bấm vào đi</div>
-</div>
+<div id="overlay">
+  <div id="countdown">3</div>
 
-<video id="myVideo" playsinline webkit-playsinline>
-  <source src="dbea6fe3-58bd-4727-bd6f-be2ecbf1dfb3.mp4" type="video/mp4">
-</video>
-
-<script>
-function startVideo() {
-  const video = document.getElementById("myVideo");
-  const overlay = document.getElementById("overlay");
-
-  overlay.style.display = "none";
-  video.style.display = "block";
-
-  video.muted = false;
-  video.play();
-
-  // Tự bật full màn hình
-  if (video.requestFullscreen) {
-      video.requestFullscreen();
-  } else if (video.webkitRequestFullscreen) {
-      video.webkitRequestFullscreen();
-  } else if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen(); // iPhone
-  }
-}
-</script>
-
-</body>
-</html>
+  <div id="buttonArea">
+    <div class="he
