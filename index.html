@@ -62,7 +62,7 @@ html, body{
 #countdown{
     display:none;
     text-align:center;
-    font-size:60px;
+    font-size:70px;
 }
 
 /* VIDEO */
@@ -85,7 +85,6 @@ video{
 </div>
 
 <div id="countdown">
-    <div>iu cún</div>
     <div id="num">5</div>
 </div>
 
@@ -101,7 +100,7 @@ let num = document.getElementById("num");
 
 function start(){
 
-    // yêu cầu full màn ngay khi bấm
+    // Xin full màn hình ngay khi bấm
     if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(()=>{});
     }
@@ -109,7 +108,7 @@ function start(){
     heart.style.display="none";
     countdown.style.display="block";
 
-    // preload mượt trước
+    // preload nhẹ cho mượt
     vid.load();
 
     let count = 5;
@@ -121,7 +120,6 @@ function start(){
             num.innerText = count;
         }
 
-        // tới số 2 → bật video
         if(count==2){
             clearInterval(timer);
             countdown.style.display="none";
