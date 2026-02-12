@@ -2,14 +2,15 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <style>
 html, body {
   margin: 0;
   padding: 0;
   background: black;
   overflow: hidden;
-  color: white;
   font-family: Arial, sans-serif;
+  color: white;
 }
 
 video {
@@ -31,24 +32,26 @@ video {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-size: 80px;
+  text-align: center;
   z-index: 10;
 }
 
-#buttonArea {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  font-size: 22px;
-}
-
 .heart {
-  font-size: 60px;
+  font-size: 70px;
   animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
   50% { transform: scale(1.2); }
+}
+
+.text {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+.big {
+  font-size: 80px;
 }
 </style>
 </head>
@@ -56,7 +59,73 @@ video {
 <body>
 
 <div id="overlay">
-  <div id="countdown">3</div>
+  <div id="firstScreen">
+    <div class="heart">❤️</div>
+    <div class="text">Bấm đi nè</div>
+  </div>
 
-  <div id="buttonArea">
-    <div class="he
+  <div id="message" class="big" style="display:none;">Iu Cún</div>
+  <div id="countdown" class="big" style="display:none;">5</div>
+</div>
+
+<video id="myVideo"
+playsinline
+webkit-playsinline
+preload="auto">
+  <source src="dbea6fe3-58bd-4727-bd6f-be2ecbf1dfb3.mp4" type="video/mp4">
+</video>
+
+<script>
+const overlay = document.getElementById("overlay");
+const firstScreen = document.getElementById("firstScreen");
+const message = document.getElementById("message");
+const countdownEl = document.getElementById("countdown");
+const video = document.getElementById("myVideo");
+
+let clicked = false;
+
+// preload trước
+video.load();
+
+overlay.addEventListener("click", function() {
+
+  if(clicked) return;
+  clicked = true;
+
+  // KÍCH HOẠT FULLSCREEN NGAY TẠI CLICK
+  if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+  } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+  }
+
+  firstScreen.style.display = "none";
+  message.style.display = "block";
+
+  setTimeout(() => {
+
+    message.style.display = "none";
+    countdownEl.style.display = "block";
+
+    let count = 5;
+
+    const timer = setInterval(() => {
+      count--;
+      if(count > 0) {
+        countdownEl.innerText = count;
+      } else {
+        clearInterval(timer);
+
+        overlay.remove();
+        video.style.display = "block";
+        video.play();
+      }
+    }, 1000);
+
+  }, 1500);
+
+});
+</script>
+
+</body>
+</html>
