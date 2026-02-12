@@ -55,7 +55,7 @@ video {
   <div>Bấm vào đi</div>
 </div>
 
-<video id="myVideo" playsinline>
+<video id="myVideo" playsinline webkit-playsinline>
   <source src="dbea6fe3-58bd-4727-bd6f-be2ecbf1dfb3.mp4" type="video/mp4">
 </video>
 
@@ -69,6 +69,15 @@ function startVideo() {
 
   video.muted = false;
   video.play();
+
+  // Tự bật full màn hình
+  if (video.requestFullscreen) {
+      video.requestFullscreen();
+  } else if (video.webkitRequestFullscreen) {
+      video.webkitRequestFullscreen();
+  } else if (video.webkitEnterFullscreen) {
+      video.webkitEnterFullscreen(); // iPhone
+  }
 }
 </script>
 
